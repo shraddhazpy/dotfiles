@@ -1,0 +1,13 @@
+#!/bin/sh
+
+output="$HOME/Pictures/screenshots/%Y-%m-%d-%T-screenshot.png"
+
+case "$1" in
+	"select") scrot "$output" --select --line mode=edge || exit ;;
+	"window") scrot "$output" --focused || exit ;;
+	"clip") scrot --select --line mode=edge -e 'xclip -selection clipboard -t image/png -i $f && rm $f' || exit ;;
+	*) scrot "$output" || exit ;;
+
+esac
+
+notify-send "Screenshot taken"
