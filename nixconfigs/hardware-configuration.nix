@@ -13,6 +13,18 @@
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
+  boot = {
+    #kernelPackages = pkgs.linuxPackages_latest;
+    cleanTmpDir = true;
+    loader.grub = {
+      enable = true;
+      version = 2;
+      device = "nodev";
+      efiSupport =true;
+    };
+
+  };
+
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/44657923-b4dd-40f4-a61f-8781cfb6d462";
       fsType = "ext4";

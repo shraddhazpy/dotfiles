@@ -11,7 +11,8 @@
     ];
 
   # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
+ # boot.loader.systemd-boot.enable = true;
+  #boot.loader.initScript.enable = true ;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.kernelParams = [ "snd-intel-dspcfg.dsp_driver=1" ];
 
@@ -97,7 +98,7 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.shraddha = {
      isNormalUser = true;
-     extraGroups = [ "wheel" "networkmanager" "audio"]; # Enable ‘sudo’ for the user.
+     extraGroups = [ "wheel" "networkmanager" "audio" "docker"]; # Enable ‘sudo’ for the user.
      packages = with pkgs; [
      ];
    };
@@ -144,14 +145,26 @@
      docker
      kind
      rustup
+     kubernetes-helm
+     kustomize_4
+     kubectl
+     dunst
+     netclient
+     netmaker-full
+     awscli2
+     google-cloud-sdk-gce
+     libnotify
    ];
 
    programs.zsh.enable=true;
 
    users.defaultUserShell= "/run/current-system/sw/bin/zsh"; 
+   
+   virtualisation.docker.enable=true;
 
    # Allow unfree packages
    nixpkgs.config.allowUnfree = true;
+
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
