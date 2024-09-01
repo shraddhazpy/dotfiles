@@ -15,10 +15,9 @@
 
   boot = {
     #kernelPackages = pkgs.linuxPackages_latest;
-    cleanTmpDir = true;
+    tmp.cleanOnBoot = true;
     loader.grub = {
       enable = true;
-      version = 2;
       device = "nodev";
       efiSupport =true;
     };

@@ -11,7 +11,7 @@
     ];
 
   # Use the systemd-boot EFI boot loader.
- # boot.loader.systemd-boot.enable = true;
+  #boot.loader.systemd-boot.enable = true;
   #boot.loader.initScript.enable = true ;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.kernelParams = [ "snd-intel-dspcfg.dsp_driver=1" ];
@@ -38,8 +38,6 @@
     corefonts 
   ];
 
-  #fonts.enableDefaultPackages=true;
-
  
   # Set your time zone.
   time.timeZone = "Asia/Kolkata";
@@ -53,9 +51,9 @@
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
 
+
   # Enable the X11 windowing system.
   services.xserver.enable = true;
-
   services.xserver.windowManager.i3.enable=true;
   services.displayManager.defaultSession = "none+i3";
 
@@ -67,7 +65,9 @@
      };
   };
   
-
+  services.netclient.enable= true;
+  systemd.services.netclient.path= [ pkgs.iptables ] ;
+  
   # Configure keymap in X11
   # services.xserver.xkb.layout = "us";
   # services.xserver.xkb.options = "eurosign:e,caps:escape";
@@ -98,7 +98,7 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.shraddha = {
      isNormalUser = true;
-     extraGroups = [ "wheel" "networkmanager" "audio" "docker"]; # Enable ‘sudo’ for the user.
+     extraGroups = [ "wheel" "networkmanager" "audio" "docker" "libvirtd"]; # Enable ‘sudo’ for the user.
      packages = with pkgs; [
      ];
    };
@@ -149,21 +149,35 @@
      kustomize_4
      kubectl
      dunst
-     netclient
-     netmaker-full
      awscli2
      google-cloud-sdk-gce
      libnotify
+     feh
+     gnumake
+     netclient
+     netmaker
+     netcat-gnu
+     traceroute
+     insomnia
+     xclip
+     unzip
    ];
 
    programs.zsh.enable=true;
+   programs.nix-ld.enable = true;
+   programs.virt-manager.enable = true;
+
 
    users.defaultUserShell= "/run/current-system/sw/bin/zsh"; 
    
    virtualisation.docker.enable=true;
+   virtualisation.libvirtd.enable=true;
+   virtualisation.spiceUSBRedirection.enable = true;
 
    # Allow unfree packages
    nixpkgs.config.allowUnfree = true;
+
+
 
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -183,12 +197,30 @@
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
-
   # Copy the NixOS configuration file and link it from the resulting system
+  #networking = {
+  #  firewall = {
+  #    enable = true;
+  #    allowedUDPPortRanges = [
+  #      {
+  #        from = 0;
+  #        to = 65535;
+  #      }
+  #     ];
+  #     allowedTCPPortRanges = [
+  #       {
+  #         from = 0;
+  #         to = 65535;
+  #       }
+  #     ];
+  #   };
+
+  # };
+
+
   # (/run/current-system/configuration.nix). This is useful in case you
   # accidentally delete configuration.nix.
-  # system.copySystemConfiguration = true;
+   system.copySystemConfiguration = true;
 
   # This option defines the first version of NixOS you have installed on this particular machine,
   # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.
